@@ -133,7 +133,7 @@ set col [create_label_button $col $line]
 
 # -------------------
 set 	line "快速创建"
-lappend line "{部位库} {Body/BodyLibrary_GUI.tcl} {一键导入部位2D面网格}"
+lappend line "{部位库} {Body/BodyLibrary_GUI.tcl} {一键导入部位2D面网格/3D网格/Solid}"
 lappend line "{材料库} {Material/MatLibrary_GUI.tcl} {一键创建常用的材料属性和对应截面属性}"
 lappend line "{_接触对} {AutoModel/CreatContPair.tcl}"
 lappend line "{接触控制} {AutoModel/CreatCtrl.tcl} {选择接触并创建对应的默认接触控制}"
