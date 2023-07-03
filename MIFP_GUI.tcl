@@ -181,6 +181,7 @@ set col [create_label_button $col $line]
 # -------------------
 set		line "Abaqus脚本"
 lappend line "{_运行Abaqus} {}"
+lappend line "{_批量计算} {}"
 lappend line "{_循环计算} {}"
 lappend line "{_骨生长设置} {}"
 lappend line "{_骨吸收设置} {}"

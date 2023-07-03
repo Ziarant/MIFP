@@ -11,6 +11,7 @@ namespace eval ::bodyGUI {
 	variable sheet;
 	variable set;
 	variable type;
+	variable types 0;
 	variable currentModule;
 }
 if {[info exists ::bodyGUI::sheet]==0}				{set ::bodyGUI::sheet 0}
@@ -64,10 +65,16 @@ proc pushPanel {module} {
 	if {$module=="胸椎"} { set ::bodyGUI::sheet 1}
 	if {$module=="腰骶"} { set ::bodyGUI::sheet 2}
 	if {$module=="四肢"} { set ::bodyGUI::sheet 3}
-	if {$module=="头部"} { set ::bodyGUI::sheet 4}
+	if {$module=="头肩"} { set ::bodyGUI::sheet 4}
 	if {$module=="韧带"} { set ::bodyGUI::sheet 5}
 	if {$module=="肌肉"} { set ::bodyGUI::sheet 6}
 	creatBodyPanel $::bodyGUI::sheet
+}
+
+proc setTypes {c} {
+	set types 0
+	set value [.f.type.$c cget -variable]
+	puts $value
 }
 
 proc creatBodyPanel {sheet} {
@@ -86,7 +93,7 @@ proc creatBodyPanel {sheet} {
 		set col 1
 		
 		set 	line "C0C1"
-		lappend line "{C0-COR} {}"
+		lappend line "{C0-COR} {ImportBody.tcl;importBody $::bodyGUI::set $::bodyGUI::types C0-COR}"
 		lappend line "{C0-CAN} {}"
 		lappend line "{C0-Facet} {}"
 		lappend line "{C1-COR} {}"
@@ -202,6 +209,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T3-COR} {}"
 		lappend line "{T3-CAN} {}"
 		lappend line "{T3-Facet} {}"
+		lappend line "{T3-EndP} {}"
 		lappend line "{T3T4-NP} {}"
 		lappend line "{T3T4-AF} {}"
 		lappend line "{T3T4-Fabers} {}"
@@ -212,6 +220,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T4-COR} {}"
 		lappend line "{T4-CAN} {}"
 		lappend line "{T4-Facet} {}"
+		lappend line "{T4-EndP} {}"
 		lappend line "{T4T5-NP} {}"
 		lappend line "{T4T5-AF} {}"
 		lappend line "{T4T5-Fabers} {}"
@@ -222,6 +231,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T5-COR} {}"
 		lappend line "{T5-CAN} {}"
 		lappend line "{T5-Facet} {}"
+		lappend line "{T5-EndP} {}"
 		lappend line "{T5T6-NP} {}"
 		lappend line "{T5T6-AF} {}"
 		lappend line "{T5T6-Fabers} {}"
@@ -232,6 +242,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T6-COR} {}"
 		lappend line "{T6-CAN} {}"
 		lappend line "{T6-Facet} {}"
+		lappend line "{T6-EndP} {}"
 		lappend line "{T6T7-NP} {}"
 		lappend line "{T6T7-AF} {}"
 		lappend line "{T6T7-Fabers} {}"
@@ -242,6 +253,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T7-COR} {}"
 		lappend line "{T7-CAN} {}"
 		lappend line "{T7-Facet} {}"
+		lappend line "{T7-EndP} {}"
 		lappend line "{T7T8-NP} {}"
 		lappend line "{T7T8-AF} {}"
 		lappend line "{T7T8-Fabers} {}"
@@ -252,6 +264,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T8-COR} {}"
 		lappend line "{T8-CAN} {}"
 		lappend line "{T8-Facet} {}"
+		lappend line "{T8-EndP} {}"
 		lappend line "{T8T9-NP} {}"
 		lappend line "{T8T9-AF} {}"
 		lappend line "{T8T9-Fabers} {}"
@@ -262,6 +275,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T9-COR} {}"
 		lappend line "{T9-CAN} {}"
 		lappend line "{T9-Facet} {}"
+		lappend line "{T9-EndP} {}"
 		lappend line "{T9T10-NP} {}"
 		lappend line "{T9T10-AF} {}"
 		lappend line "{T9T10-Fabers} {}"
@@ -272,6 +286,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T10-COR} {}"
 		lappend line "{T10-CAN} {}"
 		lappend line "{T10-Facet} {}"
+		lappend line "{T10-EndP} {}"
 		lappend line "{T10T11-NP} {}"
 		lappend line "{T10T11-AF} {}"
 		lappend line "{T10T11-Fabers} {}"
@@ -282,6 +297,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T11-COR} {}"
 		lappend line "{T11-CAN} {}"
 		lappend line "{T11-Facet} {}"
+		lappend line "{T11-EndP} {}"
 		lappend line "{T11T12-NP} {}"
 		lappend line "{T11T12-AF} {}"
 		lappend line "{T11T12-Fabers} {}"
@@ -307,6 +323,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{T12-COR} {}"
 		lappend line "{T12-CAN} {}"
 		lappend line "{T12-Facet} {}"
+		lappend line "{T12-EndP} {}"
 		lappend line "{T12L1-NP} {}"
 		lappend line "{T12L1-AF} {}"
 		lappend line "{T12L1-Fabers} {}"
@@ -317,6 +334,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{L1-COR} {}"
 		lappend line "{L1-CAN} {}"
 		lappend line "{L1-Facet} {}"
+		lappend line "{L1-EndP} {}"
 		lappend line "{L1L2-NP} {}"
 		lappend line "{L1L2-AF} {}"
 		lappend line "{L1L2-Fabers} {}"
@@ -327,6 +345,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{L2-COR} {}"
 		lappend line "{L2-CAN} {}"
 		lappend line "{L2-Facet} {}"
+		lappend line "{L2-EndP} {}"
 		lappend line "{L2L3-NP} {}"
 		lappend line "{L2L3-AF} {}"
 		lappend line "{L2L3-Fabers} {}"
@@ -337,6 +356,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{L3-COR} {}"
 		lappend line "{L3-CAN} {}"
 		lappend line "{L3-Facet} {}"
+		lappend line "{L3-EndP} {}"
 		lappend line "{L3L4-NP} {}"
 		lappend line "{L3L4-AF} {}"
 		lappend line "{L3L4-Fabers} {}"
@@ -347,6 +367,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{L4-COR} {}"
 		lappend line "{L4-CAN} {}"
 		lappend line "{L4-Facet} {}"
+		lappend line "{L4-EndP} {}"
 		lappend line "{L4L5-NP} {}"
 		lappend line "{L4L5-AF} {}"
 		lappend line "{L4L5-Fabers} {}"
@@ -357,6 +378,7 @@ proc creatBodyPanel {sheet} {
 		lappend line "{L5-COR} {}"
 		lappend line "{L5-CAN} {}"
 		lappend line "{L5-Facet} {}"
+		lappend line "{L5-EndP} {}"
 		lappend line "{L5S1-NP} {}"
 		lappend line "{L5S1-AF} {}"
 		lappend line "{L5S1-Fabers} {}"
@@ -374,38 +396,56 @@ proc creatBodyPanel {sheet} {
 		set col [create_label_button $col $line]
 		
 		set		line "骶骨"
-		lappend	line "{S1-}"
+		lappend	line "{S-COR} {}"
+		lappend	line "{S-CAN} {}"
+		lappend	line "{S-EndP} {}"
+		set col [create_label_button $col $line]
+		
+		set 	line "骨盆"
+		lappend line "{Pevlis-Cor} {}"
+		lappend line "{Pevlis-Can} {}"
+		lappend line "{Pevlis-Car} {}"
+		lappend line "{Sym-pelvis} {}"
+		set col [create_label_button $col $line]
+		
+		set 	line "骨盆韧带"
+		lappend line "{骶棘韧带} {}"
+		lappend line "{骶结节韧带} {}"
+		lappend line "{耻骨前韧带} {}"
+		lappend line "{骶髂韧带} {}"
+		lappend line "{髂腹股沟韧带} {}"
 		set col [create_label_button $col $line]
 	}
 		
-	# 第三页：肌肉系统	
+	# 第三页：四肢	
 	if {$sheet==3} {
-		set 	line "头部"
-		create_label_button 1 $line
+		set col 1
+		set 	line "上肢"
+		set col [create_label_button $col $line]
 		
-		set 	line "口腔"
-		create_label_button 2 $line
+		set 	line "手腕"
+		set col [create_label_button $col $line]
 		
-		set 	line "颈椎"
-		create_label_button 3 $line
+		set 	line "手部"
+		set col [create_label_button $col $line]
 		
-		set 	line "胸椎"
-		create_label_button 4 $line
+		set		line "上肢韧带"
+		set col [create_label_button $col $line]
 		
-		set 	line "腰椎"
-		create_label_button 5 $line
+		set 	line "下肢"
+		set col [create_label_button $col $line]
 		
-		set 	line "骨盆"
-		create_label_button 6 $line
+		set 	line "坏关节"
+		set col [create_label_button $col $line]
 		
-		set 	line "四肢"
-		create_label_button 7 $line
+		set 	line "下肢韧带"
+		set col [create_label_button $col $line]
 		
-		set 	line "手"
-		create_label_button 8 $line
-		
-		set 	line "足"
-		create_label_button 9 $line
+		set 	line "足部"
+		set col [create_label_button $col $line]
+
+		set 	line "足部韧带"
+		set col [create_label_button $col $line]
 		}
 		
 	# 第四页：头与口腔	
@@ -461,7 +501,7 @@ frame .f.set
 pack .f.set -side right -fill both
 
 set i 0
-foreach module {颈椎 胸椎 腰骶 四肢 头部 韧带 肌肉} {
+foreach module {颈椎 胸椎 腰骶 四肢 头肩 韧带 肌肉} {
     pack [radiobutton .f.side.$i -text $module -variable ::bodyGUI::currentModule \
         -value $module \
 		-height 1\
@@ -487,12 +527,15 @@ set k 1
 label .f.type.0 -text "导入格式" -width $::bodyGUI::side_width -font {MS 12}  -compound center -height 1 -fg #000000
 pack .f.type.0 -side top
 foreach type {2D网格 3D网格 几何 面片} {
-	pack [checkbutton .f.type.$k -text $type -font {MS 10}\
+	pack [checkbutton .f.type.$k -text $type\
+		-font {MS 10}\
 		-height 1\
-		-width $::bodyGUI::button_width]
+		-width $::bodyGUI::button_width\
+		-offvalue 0\
+		-onvalue 1\
+		-command "setTypes $k"]
 	incr k
 }
-
 
 pushPanel ::bodyGUI::currentModule
 
