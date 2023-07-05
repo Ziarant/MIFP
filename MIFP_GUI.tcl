@@ -71,8 +71,10 @@ proc create_label_button {loc line} {
 		set prefix [string index $name 0]
 		if {$prefix == "_"} {
 			set BTstate disabled
+			set color #C0C0C0
 		} else {
 			set BTstate normal
+			set color #F0F0F0
 		}
 		set file_command [lindex $button_data 1]
 		
@@ -81,7 +83,7 @@ proc create_label_button {loc line} {
 		-text "$name" \
 		-command [format "source %s/%s" $::hmGUI::filepath $file_command]\
 		-state $BTstate\
-		-background #F0F0F0 \
+		-background $color \
 		-fg #000000 \
 		-height 1\
 		-width $::hmGUI::button_width\
@@ -174,6 +176,7 @@ set col [create_label_button $col $line]
 set		line "工具"
 lappend line "{_材料曲线} {Tools/MatEdit.tcl} {根据输入的材料属性绘制对应的应力应变曲线}"
 lappend line "{名称编辑} {Tools/nameEditGUI.tcl}"
+lappend line "{_网格修正} {Tools/meshFix.tcl} {检查极小边/小角度单元，删除并合并节点}"
 lappend line "{模型变换} {Tools/modelChangeGUI.tcl} {基于Inp或Odb等，变换模型网格结构}"
 lappend line "{模型检查} {Tools/ModelCheck.tcl}"
 set col [create_label_button $col $line]

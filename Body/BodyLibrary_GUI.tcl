@@ -13,7 +13,9 @@ namespace eval ::bodyGUI {
 	variable type;
 	variable types 0;
 	variable currentModule;
+	variable state;
 }
+
 if {[info exists ::bodyGUI::sheet]==0}				{set ::bodyGUI::sheet 0}
 if {[info exists ::bodyGUI::currentModule]==0}		{set ::bodyGUI::currentModule 颈椎}
 if {[info exists ::bodyGUI::set]==0}		{set ::bodyGUI::set 默认}
@@ -26,6 +28,8 @@ set ::bodyGUI::filepath [file dirname [info script]]
 set ::bodyGUI::label_width $::bodyGUI::button_width
 set ::bodyGUI::name "部位库"
 
+set ::bodyGUI::state [dict create]
+
 # 创建按键阵列：函数{位置，列表}
 proc create_label_button {loc line} {
 
@@ -37,24 +41,33 @@ proc create_label_button {loc line} {
 	set n_cur 1
 	foreach button_data $line_button {
 		set name [lindex $button_data 0]
-		set prefix [string index $name 0]
-		if {$prefix == "_"} {
+		set suit [lindex $button_data 2]
+		if {[lsearch -glob $suit $::bodyGUI::set] == -1} {
 			set BTstate disabled
+			set color #C0C0C0
 		} else {
 			set BTstate normal
+			set color #F0F0F0
 		}
 		set file_command [lindex $button_data 1]
 		button .f.top.$loc.$n_cur \
 		-text "$name" \
 		-command [format "source %s/%s" $::bodyGUI::filepath $file_command]\
 		-state $BTstate\
-		-background #F0F0F0 \
+		-background  $color\
 		-fg #000000 \
 		-height 1\
 		-width $::bodyGUI::button_width\
 		-font {MS 8}
+		
+		dict set ::bodyGUI::state $loc$n_cur [lindex $button_data 2]
+		
 		if {$n_cur==$num} { break }
 		set n_cur [expr $n_cur+1]
+		
+		# 将事件处理函数绑定到套装的选择事件
+
+		
 	}
 	set loc [expr $loc+1]
 	return $loc
@@ -77,6 +90,23 @@ proc setTypes {c} {
 	puts $value
 }
 
+proc setSuit {suit} {
+	for { set loc 0 } { $loc < 12 } { incr loc 1 } {
+		for { set n_cur 0 } { $n_cur < 12 } { incr n_cur 1 } {
+			catch {
+				set suits [dict get $::bodyGUI::state $loc$n_cur]
+				if {[lsearch -glob $suits $suit] == -1} {
+					.f.top.$loc.$n_cur configure -state disabled
+					.f.top.$loc.$n_cur configure -background #C0C0C0
+					} else {
+					.f.top.$loc.$n_cur configure -state normal
+					.f.top.$loc.$n_cur configure -background #F0F0F0
+					}
+			}
+		}
+	}	
+}
+
 proc creatBodyPanel {sheet} {
 	destroy  .f.top
 	frame .f.top
@@ -93,35 +123,35 @@ proc creatBodyPanel {sheet} {
 		set col 1
 		
 		set 	line "C0C1"
-		lappend line "{C0-COR} {ImportBody.tcl;importBody $::bodyGUI::set $::bodyGUI::types C0-COR}"
-		lappend line "{C0-CAN} {}"
-		lappend line "{C0-Facet} {}"
-		lappend line "{C1-COR} {}"
-		lappend line "{C1-CAN} {}"
-		lappend line "{C1-Facet} {}"
-		lappend line "{以上全部} {}"
+		lappend line "{C0-COR} {ImportBody.tcl;importBody $::bodyGUI::set $::bodyGUI::types C0-COR} {默认}"
+		lappend line "{C0-CAN} {} {默认}"
+		lappend line "{C0-Facet} {} {默认}"
+		lappend line "{C1-COR} {} {默认}"
+		lappend line "{C1-CAN} {} {默认}"
+		lappend line "{C1-Facet} {} {默认}"
+		lappend line "{以上全部} {} {默认}"
 		set col [create_label_button $col $line]
 		
 		set 	line "C2"
-		lappend line "{C2-COR} {}"
-		lappend line "{C2-CAN} {}"
-		lappend line "{C2-Facet} {}"
-		lappend line "{C2-EndP} {}"
-		lappend line "{C2C3-NP} {}"
-		lappend line "{C2C3-AF} {}"
-		lappend line "{C2C3-Fabers} {}"
-		lappend line "{以上全部} {}"
+		lappend line "{C2-COR} {} {默认}"
+		lappend line "{C2-CAN} {} {默认}"
+		lappend line "{C2-Facet} {} {默认}"
+		lappend line "{C2-EndP} {} {默认}"
+		lappend line "{C2C3-NP} {} {默认}"
+		lappend line "{C2C3-AF} {} {默认}"
+		lappend line "{C2C3-Fabers} {} {默认}"
+		lappend line "{以上全部} {} {默认}"
 		set col [create_label_button $col $line]
 		
 		set 	line "C3"
-		lappend line "{C3-COR} {}"
-		lappend line "{C3-CAN} {}"
-		lappend line "{C3-Facet} {}"
-		lappend line "{C3-EndP} {}"
-		lappend line "{C3C4-NP} {}"
-		lappend line "{C3C4-AF} {}"
-		lappend line "{C3C4-Fabers} {}"
-		lappend line "{以上全部} {}"
+		lappend line "{C3-COR} {} {默认}"
+		lappend line "{C3-CAN} {} {默认}"
+		lappend line "{C3-Facet} {} {默认}"
+		lappend line "{C3-EndP} {} {默认}"
+		lappend line "{C3C4-NP} {} {默认}"
+		lappend line "{C3C4-AF} {} {默认}"
+		lappend line "{C3C4-Fabers} {} {默认}"
+		lappend line "{以上全部} {} {默认}"
 		set col [create_label_button $col $line]
 		
 		set 	line "C4"
@@ -448,34 +478,19 @@ proc creatBodyPanel {sheet} {
 		set col [create_label_button $col $line]
 		}
 		
-	# 第四页：头与口腔	
+	# 第四页：头肩	
 	if {$sheet==4} {
+		set col 1
+	
 		set 	line "头部"
-		create_label_button 1 $line
+		set col [create_label_button $col $line]
 		
 		set 	line "口腔"
-		create_label_button 2 $line
+		set col [create_label_button $col $line]
 		
-		set 	line "颈椎"
-		create_label_button 3 $line
+		set 	line "肩膀"
+		set col [create_label_button $col $line]
 		
-		set 	line "胸椎"
-		create_label_button 4 $line
-		
-		set 	line "腰椎"
-		create_label_button 5 $line
-		
-		set 	line "骨盆"
-		create_label_button 6 $line
-		
-		set 	line "四肢"
-		create_label_button 7 $line
-		
-		set 	line "手"
-		create_label_button 8 $line
-		
-		set 	line "足"
-		create_label_button 9 $line
 		}
 		
 	# pack小部件设置
@@ -519,6 +534,7 @@ foreach set {默认 女性 儿童 病例-1 病例-2} {
         -value $set \
 		-height 1\
 		-width $::bodyGUI::button_width\
+		-command "setSuit $set"\
 		-font {MS 12} ]
 	incr j
 }
