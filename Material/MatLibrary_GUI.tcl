@@ -59,7 +59,8 @@ proc pushPanel {module} {
 	if {$module=="线弹性体"} { set ::matGUI::sheet 0}
 	if {$module=="弹塑性体"} { set ::matGUI::sheet 1}
 	if {$module=="超弹性体"} { set ::matGUI::sheet 2}
-	if {$module=="其他材料"} { set ::matGUI::sheet 3}
+	if {$module=="多孔材料"} { set ::matGUI::sheet 3}
+	if {$module=="其他材料"} { set ::matGUI::sheet 4}
 	creatMatPanel $::matGUI::sheet
 }
 
@@ -84,10 +85,7 @@ proc creatMatPanel {sheet} {
 		lappend line "{Peek(572M)} {creatMaterial.tcl;creatElasticMat Peek}"
 		lappend line "{钛(114G)} {creatMaterial.tcl;creatElasticMat Ti}"
 		lappend line "{不锈钢(220G)} {creatMaterial.tcl;creatElasticMat Steel}"
-		set col [create_label_button $col $line]
-		
-		set		line "SawBone"
-		lappend line "{15级(123M)} {creatMaterial.tcl;creatElasticMat SawBone15}"
+		lappend line "{15级SawBone} {creatMaterial.tcl;creatElasticMat SawBone15}"
 		set col [create_label_button $col $line]
 
 		set 	line "颈椎"
@@ -110,20 +108,17 @@ proc creatMatPanel {sheet} {
 		lappend line "{关节囊韧带(10)} {creatMaterial.tcl;creat1DElasticMat C_JCL}"
 		set col [create_label_button $col $line]
 		
-		set		line "胸椎"
-		lappend line "{皮质骨} {creatMaterial.tcl;creatElasticMat T_Cor}"
-		lappend line "{松质骨} {creatMaterial.tcl;creatElasticMat T_Can}"
-		lappend line "{终板} {creatMaterial.tcl;creatElasticMat T_EndP}"
-		lappend line "{后部} {creatMaterial.tcl;creatElasticMat T_Post}"
-		lappend line "{纤维环基质} {creatMaterial.tcl;creatElasticMat T_AF}"
-		lappend line "{髓核} {creatMaterial.tcl;creatElasticMat T_NP}"
-		lappend line "{关节囊} {creatMaterial.tcl;creatElasticMat T_FACET}"
-		set col [create_label_button $col $line]
+		# set		line "胸椎"
+		# lappend line "{皮质骨} {creatMaterial.tcl;creatElasticMat T_Cor}"
+		# lappend line "{松质骨} {creatMaterial.tcl;creatElasticMat T_Can}"
+		# lappend line "{终板} {creatMaterial.tcl;creatElasticMat T_EndP}"
+		# lappend line "{后部} {creatMaterial.tcl;creatElasticMat T_Post}"
+		# lappend line "{纤维环基质} {creatMaterial.tcl;creatElasticMat T_AF}"
+		# lappend line "{髓核} {creatMaterial.tcl;creatElasticMat T_NP}"
+		# lappend line "{关节囊} {creatMaterial.tcl;creatElasticMat T_FACET}"
+		# set col [create_label_button $col $line]
 		
-		set		line "胸椎韧带"
-		set col [create_label_button $col $line]
-		
-		set		line "腰椎"
+		set		line "胸腰椎"
 		lappend line "{皮质骨} {creatMaterial.tcl;creatElasticMat L_Cor}"
 		lappend line "{松质骨} {creatMaterial.tcl;creatElasticMat L_Can}"
 		lappend line "{终板} {creatMaterial.tcl;creatElasticMat L_EndP}"
@@ -133,7 +128,7 @@ proc creatMatPanel {sheet} {
 		lappend line "{关节囊} {creatMaterial.tcl;creatElasticMat L_FACET}"
 		set col [create_label_button $col $line]
 		
-		set		line "腰椎韧带"
+		set		line "胸腰椎韧带"
 		lappend line "{前纵韧带(5)} {creatMaterial.tcl;creat1DElasticMat L_ALL}"
 		lappend line "{后纵韧带(5)} {creatMaterial.tcl;creat1DElasticMat L_PLL}"
 		lappend line "{黄韧带(4)} {creatMaterial.tcl;creat1DElasticMat L_LF}"
@@ -147,6 +142,7 @@ proc creatMatPanel {sheet} {
 		set col [create_label_button $col $line]
 		
 		set		line "四肢"
+		lappend line "{髓腔} {creatMaterial.tcl;creatElasticMat Marrow}"
 		set col [create_label_button $col $line]
 		
 		set		line "手"
@@ -178,6 +174,12 @@ proc creatMatPanel {sheet} {
 		create_label_button 1 $line
 	}
 	
+	# 第四页：多孔材料
+	if {$sheet==3} {
+		set		line "实体"
+		create_label_button 1 $line
+	}
+	
 	# pack小部件设置
 	for { set hloc 0 } { $hloc < 12 } { incr hloc 1 } {
 		for { set vloc 0 } { $vloc < 15 } { incr vloc 1 } {
@@ -195,7 +197,7 @@ frame .f.side
 pack .f.side -side left -fill both
 
 set i 0
-foreach module {线弹性体 弹塑性体 超弹性体 其他材料} {
+foreach module {线弹性体 弹塑性体 超弹性体 多孔材料 其他材料} {
     pack [radiobutton .f.side.$i -text $module -variable ::matGUI::currentModule \
         -value $module \
 		-height 1\

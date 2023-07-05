@@ -45,6 +45,8 @@ set ::Mat::Elastic(L_AF) [list 4.2 0.4]
 set ::Mat::Elastic(L_NP) [list 1 0.48]
 set ::Mat::Elastic(L_FACET) [list 1000 0.4]
 
+set ::Mat::Elastic(Marrow) [list 2.0 0.167]
+
 # 线弹性材料:Elastic(名称) [弹性模量(MPa) 泊松比 截面积 ?不可压缩 密度]
 set ::Mat::Elastic1D(C_TL) [list 17.1 0.4 0.62 1]
 set ::Mat::Elastic1D(C_AL) [list 11.4 0.4 0.4 1]
