@@ -74,6 +74,44 @@ proc createPlasticMaterial {mat_name value_E value_NU yield_SS} {
 	return $mat_id
 }
 
+# 函数：创建线弹性材料(名称, 弹性模量, 渗透参数)->材料ID
+proc createSoilMaterial {mat_name value_E value_NU list_PP} {
+	
+	set mat_id [expr [hm_entityinfo maxid mats] + 1]
+	catch {
+		# 如有同名材料，替换数据
+		hm_createmark materials 1 "by name only" "$mat_name"
+		set mat_id [hm_entityinfo id mats $mat_name]
+		*deletemark materials 1
+	} 
+	
+	*createentity mats cardimage=ABAQUS_MATERIAL includeid=0 name="$mat_name"
+	hm_createmark materials 1 "by name only" "$mat_name"
+	set matId [hm_entityinfo id mats $mat_name]
+	catch {
+		*setvalue mats id=$matId id=$mat_id 
+	}
+
+	# 设置材料类型：Elastic
+	*setvalue mats id=$mat_id STATUS=2 105=1
+	*setvalue mats id=$mat_id STATUS=0 26=1
+	*setvalue mats id=$mat_id STATUS=2 104=1
+	
+	# 设置模量和泊松比
+	*setvalue mats id=$mat_id STATUS=2 3=$value_E
+	*setvalue mats id=$mat_id STATUS=2 4=$value_NU
+	
+	# 设置渗透参数
+	set N [llength $list_PP]
+	*setvalue mats id=$mat_id STATUS=0 4669=1
+	*setvalue mats id=$mat_id STATUS=2 4670=$N
+	for {set i 0} {$i < $N} {incr i} {
+		set line [lindex $list_PP $i]
+		*setvalue mats id=$mat_id STATUS=2 ROW=$i 4671=$line
+	}
+	return $mat_id
+}
+
 # 函数：创建Solid截面属性（材料名称）->属性ID
 proc createPropertiesSolid {mat_name} {
 	

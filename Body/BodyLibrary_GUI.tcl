@@ -85,8 +85,7 @@ proc pushPanel {module} {
 }
 
 proc setTypes {c} {
-	set types 0
-	set value [.f.type.$c cget -variable]
+	set value [.f.type.$c cget -state]
 	puts $value
 }
 

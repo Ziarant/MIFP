@@ -206,6 +206,7 @@ set col [create_label_button $col $line]
 
 # -------------------
 set		line "接口"
+lappend line "{测试} {Setting/Test.tcl} {测试}"
 lappend line "{设置} {Setting/settingGUI.tcl} {MIFP平台设置}"
 lappend line "{更新} {Setting/update.tcl} {检查并下载更新}"
 set col [create_label_button $col $line]

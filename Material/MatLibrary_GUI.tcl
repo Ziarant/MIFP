@@ -85,6 +85,7 @@ proc creatMatPanel {sheet} {
 		lappend line "{Peek(572M)} {creatMaterial.tcl;creatElasticMat Peek}"
 		lappend line "{钛(114G)} {creatMaterial.tcl;creatElasticMat Ti}"
 		lappend line "{不锈钢(220G)} {creatMaterial.tcl;creatElasticMat Steel}"
+		lappend line "{钴铬钼(241G)} {creatMaterial.tcl;creatElasticMat CoCrMo}"
 		lappend line "{15级SawBone} {creatMaterial.tcl;creatElasticMat SawBone15}"
 		set col [create_label_button $col $line]
 
@@ -158,26 +159,51 @@ proc creatMatPanel {sheet} {
 
 	# 第二页：弹塑性体
 	if {$sheet==1} {
+		set col 0
+		
 		set		line "实体"
-		create_label_button 1 $line
+		lappend line "{超高聚乙烯} {creatMaterial.tcl;creatPlasticMat Ti-6Al-4V}"
+		lappend line "{钛(114G)} {creatMaterial.tcl;creatPlasticMat Ti-6Al-4V}"
+		lappend line "{不锈钢(220G)} {creatMaterial.tcl;creatPlasticMat Steel}"
+		lappend line "{钴铬钼(241G)} {creatMaterial.tcl;creatPlasticMat CoCrMo}"
+		set col [create_label_button $col $line]
 	
 		set		line "多孔材料"
 		lappend line "{钻石型} {creatMaterial.tcl;creatPlasticMat Porous_Diamond}"
 		lappend line "{十二面体} {creatMaterial.tcl;creatPlasticMat Porous_12hedron}"
 		lappend line "{体心立方} {creatMaterial.tcl;creatPlasticMat Porous_BodyCenter}"
-		create_label_button 2 $line
+		set col [create_label_button $col $line]
 	}
 
 	# 第三页：超弹性体
 	if {$sheet==2} {
+		set col 0
+		
 		set		line "实体"
-		create_label_button 1 $line
+		set col [create_label_button $col $line]
 	}
 	
 	# 第四页：多孔材料
 	if {$sheet==3} {
+		set col 0
+		
 		set		line "实体"
-		create_label_button 1 $line
+		set col [create_label_button $col $line]
+	}
+	
+	# 第五页：其他材料
+	if {$sheet==4} {
+		set col 0
+		
+		set		line "骨愈合(Soil)"
+		lappend line "{皮质骨} {creatMaterial.tcl;creatSoilMat Heal_Cor}"
+		lappend line "{髓腔} {creatMaterial.tcl;creatSoilMat Heal_Marrow}"
+		lappend line "{生长迭代区} {creatMaterial.tcl;creatSoilMat Heal_Granulation}"
+		lappend line "{纤维化骨} {creatMaterial.tcl;creatSoilMat Heal_Fibrous}"
+		lappend line "{分化软骨} {creatMaterial.tcl;creatSoilMat Heal_Car}"
+		lappend line "{未成熟骨} {creatMaterial.tcl;creatSoilMat Heal_Immature}"
+		lappend line "{成熟骨} {creatMaterial.tcl;creatSoilMat Heal_Mature}"
+		set col [create_label_button $col $line]
 	}
 	
 	# pack小部件设置

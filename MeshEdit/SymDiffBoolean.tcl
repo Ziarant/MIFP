@@ -13,6 +13,10 @@ if {[info exists ::SymDiffBoolean::tolerance]==0} {set ::SymDiffBoolean::toleran
 # 路径定义
 set filepath [file dirname [info script]]
 
+namespace eval ::SymDiff {
+	variable tolerance
+}
+
 if {[info exists ::SymDiff::tolerance]==0} {set ::SymDiff::tolerance 0.001}
 
 

@@ -9,6 +9,7 @@ namespace eval ::Mat {
 	variable Elastic
 	variable Elastic1D
 	variable Plastic
+	variable Soil
 }
 
 set ::material::filepath [file dirname [info script]]
@@ -20,6 +21,8 @@ set ::Mat::Elastic(Peek) [list 572 0.3]
 set	::Mat::Elastic(SawBone15) [list 123 0.3]
 set ::Mat::Elastic(Ti) [list 114000 0.3]
 set ::Mat::Elastic(Steel) [list 220000 0.3]
+set ::Mat::Elastic(CoCrMo) [list 241000 0.3]
+
 
 set ::Mat::Elastic(C_Cor) [list 12000 0.29]
 set ::Mat::Elastic(C_Can) [list 450 0.29]
@@ -66,10 +69,22 @@ set ::Mat::Elastic1D(L_ITL) [list 10 0.4 0.2 1]
 
 set ::Mat::Elastic1D(Fibers) [list 400 0.3 0.00015 1]
 
-# 线弹性材料:Elastic(名称) [弹性模量(MPa) 泊松比 屈服强度List 密度]
+# 弹塑性材料:Elastic(名称) [弹性模量(MPa) 泊松比 屈服强度List 密度]
+set ::Mat::Plastic(Ti-6Al-4V) [list 114000 0.3 [list 880 0]]
+set ::Mat::Plastic(Steel) [list 220000 0.3 [list 205 0]]
+set ::Mat::Plastic(CoCrMo) [list 241000 0.3 [list 880 0]]
 set ::Mat::Plastic(Porous_Diamond) [list 1985.96 0.3 [list 65.34 0]]
 set ::Mat::Plastic(Porous_12hedron) [list 1721.44 0.3 [list 63.16 0]]
 set ::Mat::Plastic(Porous_BodyCenter) [list 1221.43 0.3 [list 49.67 0]]
+
+# Soil材料：Elastic(名称) [弹性模量(MPa) 泊松比 渗流List]
+set ::Mat::Soil(Heal_Cor) [list 16700 0.3 [list "*Permeability, specific=1." "1e-5,1." "*Porous Bulk Moduli" "13920,2300."]]
+set ::Mat::Soil(Heal_Marrow) [list 2.0 0.167 [list "*Permeability, specific=1." "1e-2,1." "*Porous Bulk Moduli" "2300,2300."]]
+set ::Mat::Soil(Heal_Granulation) [list 0.05 0.167 [list "*Permeability, specific=1." "1e-2,1." "*Porous Bulk Moduli" "2300,2300."]]
+set ::Mat::Soil(Heal_Fibrous) [list 2.0 0.3 [list "*Permeability, specific=1." "1e-2,1." "*Porous Bulk Moduli" "2300,2300."]]
+set ::Mat::Soil(Heal_Car) [list 10 0.3 [list "*Permeability, specific=1." "5e-3,1." "*Porous Bulk Moduli" "3400,2300."]]
+set ::Mat::Soil(Heal_Immature) [list 1000 0.3 [list "*Permeability, specific=1." "0.1,1." "*Porous Bulk Moduli" "20000,2300."]]
+set ::Mat::Soil(Heal_Mature) [list 6000 0.3 [list "*Permeability, specific=1." "0.37,1." "*Porous Bulk Moduli" "20000,2300."]]
 
 proc creatElasticMat {name} {
 
@@ -105,4 +120,14 @@ proc creatPlasticMat {name} {
 	createPlasticMaterial $name $E $NU $YS
 	createPropertiesSolid $name
 	puts \t创建弹塑性材料：$name\t\t弹性模量：$E\t\t泊松比：$NU\t\t屈服强度：[lindex $YS 0]
+	}
+	
+proc creatSoilMat {name} {
+	set E [lindex $::Mat::Soil($name) 0]
+	set NU [lindex $::Mat::Soil($name) 1]
+	set PP [lindex $::Mat::Soil($name) 2]
+	
+	# 设置材料、属性
+	createSoilMaterial $name $E $NU $PP
+	createPropertiesSolid $name
 	}
